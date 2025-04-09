@@ -1,24 +1,39 @@
 
-document.addEventListener('DOMContentLoaded', () => {
-    const card = document.querySelector('.card');
-    const imagen = document.querySelector('.card-image');
+import url, { get } from '../API/api.js';
 
-    const imagenes = [
-        'https://static.wikia.nocookie.net/naruto/images/d/d6/Naruto_Part_I.png',
-        'https://static.wikia.nocookie.net/naruto/images/7/7d/Naruto_Part_II.png'
-    ];
+document.addEventListener('DOMContentLoaded', async () => {
+    const cards = document.querySelectorAll('.card');
 
-    let index = 0;
+    try {
+        const data = await get(url);
+        const personajes = data.characters;
 
-    imagen.addEventListener('click', () => {
-     
-        index = (index + 1) % imagenes.length;
-        imagen.src = imagenes[index];
-    });
-    const titulo = card.querySelector('.card-title');
-    titulo.textContent = 'Naruto';
-    const head = card.querySelector('.card-head');
-    head.textContent = 'Naruto Shippuden';
-    const description = card.querySelector('.card-description');
-    description.textContent = 'Naruto Shippuden is a Japanese manga series written and illustrated by Masashi Kishimoto. It was serialized in Shogakukan\'s Weekly Shōnen Jump magazine from 1994 to 2002, with its chapters collected in twenty-four tankōbon volumes.';
-})
+        cards.forEach((card, index) => {
+            const personaje = personajes[index];
+            if (!personaje) return;
+
+            const imagen = card.querySelector('.card-image');
+            const titulo = card.querySelector('.card-title');
+            const head = card.querySelector('.card-head');
+            const description = card.querySelector('.card-description');
+
+            imagen.src = personaje.images?.[0];
+            titulo.textContent = personaje.name;
+            head.textContent = `Clan: ${personaje.personal.clan}`;
+            description.textContent = `Debut: ${personaje.debut.manga}`;
+
+            const imagenesAlternativas = [
+                personaje.images?.[1] || personaje.images?.[0],
+                personaje.images?.[0]
+            ];
+            let indexImg = 0;
+
+            imagen.addEventListener('click', () => {
+                indexImg = (indexImg + 1) % imagenesAlternativas.length;
+                imagen.src = imagenesAlternativas[indexImg];
+            });
+        });
+    } catch (error) {
+        console.error('Error al traer los personajes:', error);
+    }
+});
