@@ -1,23 +1,21 @@
-// Importamos la URL y la función GET desde nuestro archivo API
 import url, { get } from "../API/api.js";
 
-// Variables globales
 let allCharacters = []; // Aquí se guardarán todos los personajes
 let currentPage = 1; // Página actual que se está mostrando
-const itemsPerPage = prompt("Ingrese el número de personajes por página");
+const itemsPerPage = 2; //no se le puede colocar un prompt porque el codigo se rompe
 
-// Esperamos a que todo el DOM esté cargado para ejecutar el código
+// Esperamos a que todo el DOM esté cargado para ejecutar el código, y mostramos la primera página de personajes
 document.addEventListener("DOMContentLoaded", async () => {
   try {
-    // Hacemos la petición a la API para obtener los personajes
-    const { characters } = await get(url);
+    
+    const { characters } = await get(url);  // Hacemos la petición a la API para obtener los personajes
     allCharacters = characters; // Guardamos los personajes en la variable global
 
     // Mostramos la primera página de personajes
     showPage(currentPage);
-  } catch (e) {
+  } catch (error) {
     // Si algo falla, mostramos el error en consola
-    console.error("Error al traer los personajes:", e);
+    console.error("Error al traer los personajes:", error);
   }
 });
 
@@ -33,8 +31,9 @@ const createCard = ({ name, images = [], personal = {}, debut = {} }) => {
   card.innerHTML = `
         <img class="card-image" src="${img}" alt="${name}">
         <h3 class="card-title">${name}</h3>
-        <p class="card-head">Clan: ${personal.clan || "Desconocido"}</p>
-        <p class="card-description">Debut: ${debut.manga || "No disponible"}</p>
+        <p class="card-head">Clan: ${personal.clan}</p>
+        <p class="card-description">Debut: ${debut.manga}</p>
+        <p class="card-description">Dirthdate: ${personal.birthdate}</p>
     `;
 
   // Lógica para cambiar entre la imagen principal y la alternativa al hacer clic
