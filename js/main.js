@@ -2,7 +2,7 @@ import url, { get } from "../API/api.js";
 
 let allCharacters = []; // Aquí se guardarán todos los personajes
 let currentPage = 1; // Página actual que se está mostrando
-const itemsPerPage = 2; //no se le puede colocar un prompt porque el codigo se rompe
+const itemsPerPage = 4; //no se le puede colocar un prompt porque el codigo se rompe
 
 // Esperamos a que todo el DOM esté cargado para ejecutar el código, y mostramos la primera página de personajes
 document.addEventListener("DOMContentLoaded", async () => {
