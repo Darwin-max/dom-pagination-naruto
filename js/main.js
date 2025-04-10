@@ -58,20 +58,42 @@ const showPage = (page) => {
 const updatePagination = () => {
     const totalPages = Math.ceil(allCharacters.length / itemsPerPage);
     const buttons = document.querySelector('.pagination');
+    buttons.innerHTML = "";
 
-    buttons.innerHTML = `
-        <button ${currentPage === 1 ? 'disabled' : ''} id="prev">Antes</button>
-        <button disabled>Página ${currentPage} de ${totalPages}</button>
-        <button ${currentPage === totalPages ? 'disabled' : ''} id="next">Después</button>
-    `;
+    const prevBtn = document.createElement('button');
+    prevBtn.textContent = 'Antes';
+    prevBtn.disabled = currentPage === 1;
+    prevBtn.id = 'prev';
+    buttons.appendChild(prevBtn);
 
-    buttons.querySelector('#prev')?.addEventListener('click', () => {
-        currentPage--;
-        showPage(currentPage);
+    for (let i = 1; i <= totalPages; i++) {
+        const pageBtn = document.createElement('button');
+        pageBtn.textContent = i;
+        if (i === currentPage) pageBtn.classList.add('active');
+        pageBtn.addEventListener('click', () => {
+            currentPage = i;
+            showPage(currentPage);
+        });
+        buttons.appendChild(pageBtn);
+    }
+
+    const nextBtn = document.createElement('button');
+    nextBtn.textContent = 'Después';
+    nextBtn.disabled = currentPage === totalPages;
+    nextBtn.id = 'next';
+    buttons.appendChild(nextBtn);
+
+    prevBtn.addEventListener('click', () => {
+        if (currentPage > 1) {
+            currentPage--;
+            showPage(currentPage);
+        }
     });
 
-    buttons.querySelector('#next')?.addEventListener('click', () => {
-        currentPage++;
-        showPage(currentPage);
+    nextBtn.addEventListener('click', () => {
+        if (currentPage < totalPages) {
+            currentPage++;
+            showPage(currentPage);
+        }
     });
 };
