@@ -4,7 +4,7 @@ import url, { get } from "../API/api.js";
 // Variables globales
 let allCharacters = []; // Aquí se guardarán todos los personajes
 let currentPage = 1; // Página actual que se está mostrando
-const itemsPerPage = 4; // Número de personajes que se muestran por página
+const itemsPerPage = prompt("Ingrese el número de personajes por página");
 
 // Esperamos a que todo el DOM esté cargado para ejecutar el código
 document.addEventListener("DOMContentLoaded", async () => {
